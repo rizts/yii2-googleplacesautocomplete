@@ -16,6 +16,8 @@ class GooglePlacesAutoComplete extends InputWidget {
     
     public $language = 'en-US';
 
+    public $pluginOptions = [];
+
     public $autocompleteOptions = [];
 
     /**
@@ -35,12 +37,14 @@ class GooglePlacesAutoComplete extends InputWidget {
      */
     public function registerClientScript(){
         $elementId = $this->options['id'];
+        $apiKey = $this->pluginOptions['key'];
         $scriptOptions = json_encode($this->autocompleteOptions);
         $view = $this->getView();
         $view->registerJsFile(self::API_URL . http_build_query([
             'libraries' => $this->libraries,
             'sensor' => $this->sensor ? 'true' : 'false',
-            'language' => $this->language
+            'language' => $this->language,
+            'key' => $apiKey
         ]));
         $view->registerJs(<<<JS
 (function(){
