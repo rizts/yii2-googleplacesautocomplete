@@ -18,6 +18,8 @@ class GooglePlacesAutoComplete extends InputWidget {
 
     public $pluginOptions = [];
 
+    public $pluginEvents = [];
+
     public $autocompleteOptions = [];
 
     /**
@@ -39,6 +41,7 @@ class GooglePlacesAutoComplete extends InputWidget {
         $elementId = $this->options['id'];
         $apiKey = $this->pluginOptions['key'];
         $scriptOptions = json_encode($this->autocompleteOptions);
+        $events = json_encode($this->pluginEvents);
         $view = $this->getView();
         $view->registerJsFile(self::API_URL . http_build_query([
             'libraries' => $this->libraries,
@@ -50,8 +53,13 @@ class GooglePlacesAutoComplete extends InputWidget {
 (function(){
     var input = document.getElementById('{$elementId}');
     var options = {$scriptOptions};
+    var events = {$events};
 
-    new google.maps.places.Autocomplete(input, options);
+    autocomplete = new google.maps.places.Autocomplete(input, options);
+
+    events.forEach(function(value, key) {
+        autocomplete.addListener(key, value);
+    });
 })();
 JS
         , \yii\web\View::POS_READY);
