@@ -60,8 +60,12 @@ class GooglePlacesAutoComplete extends InputWidget {
         if (place.geometry) {
             lat = place.geometry.location.lat();
             lng = place.geometry.location.lng();
-            document.getElementById('{$inputLat}').value = lat;
-            document.getElementById('{$inputLng}').value = lng;
+            if (document.getElementById('{$inputLat}') != 'undefined') {
+                document.getElementById('{$inputLat}').value = lat;
+            }
+            if (document.getElementById('{$inputLng}') != 'undefined') {
+                document.getElementById('{$inputLng}').value = lng;
+            }
         }
     });
 })();
